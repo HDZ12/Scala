@@ -60,3 +60,16 @@ val zhangsan=Y2.filter(x=>x._1=="zhangsan")
 ```Scala
 val res=Y2.sortBY(_._2).reverse
 ```
+11. 获取Y2内wangwu的性别信息
+```Scala
+val wan = Y2.filter(_._1=="wangwu").map(_._3)
+```
+12. 定义一个高阶函数，对数组中的元素按照指定的规则进行过滤,比如：数组Array（1，4，7，10，6，9，8）,规则：只保留偶数数据。
+```Scala
+def filter(arr1: Array[Int],f:Int=>Boolean)={
+val res=for(i<-arr if f(i)) yield i
+res
+}
+val array=Array(1,4,7,10,6,9,8)
+val a=filter(array,(x=>x%2==0))
+```
