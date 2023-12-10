@@ -1,4 +1,4 @@
-![image](https://github.com/HDZ12/Scala/assets/99587726/4f80bbfe-068c-413c-833a-12c0dfad7beb)1. 创建一个1-10数组的RDD，将所有元素*2形成新的RDD
+1. 创建一个1-10数组的RDD，将所有元素*2形成新的RDD
 ```Scala
 val arr=Range(1 to 10)
 val rdd=sc.makeRDD(arr)
