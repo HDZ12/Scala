@@ -1,4 +1,4 @@
-1. 创建一个1-10数组的RDD，将所有元素*2形成新的RDD
+![image](https://github.com/HDZ12/Scala/assets/99587726/4f80bbfe-068c-413c-833a-12c0dfad7beb)1. 创建一个1-10数组的RDD，将所有元素*2形成新的RDD
 ```Scala
 val arr=Range(1 to 10)
 val rdd=sc.makeRDD(arr)
@@ -84,6 +84,23 @@ val rdd1=rdd.combineByKey(
   (acc1:(Int,Int),acc2:(Int,Int))=>(acc1._1+acc2._1,acc1._2+acc2._2)
 )
 val result=rdd1.map(x=>x._1,x._2._1.toDouble/x._2._2)
+```
+15. 有学生课程成绩文件，存储在“\student\score.txt”中，通过Spark编程完成以下问题：
+![image](https://github.com/HDZ12/Scala/assets/99587726/c560786a-cbf5-446a-9457-c0b8556f428e)
+（1）该系共有多少名学生/
+（2）Tom的总成绩平均分/
+（3）每名同学选修的课程门数/
+（4）该系Database课程共有多少人选修/
+（5）各门课程的平均分是多少/
+（6）每位同学的总成绩
+```Scala
+val rdd=sc.textFile("\student\score.txt").map(x=>x.split(",")),map(x=>(x(0),x(1),x(2)))
+```
+(1) 
+```Scala
+val count=rdd.map(x=>x._1).distinct().count()
+```
+(2)
 ```
 
 
