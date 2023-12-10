@@ -62,8 +62,10 @@ val rdd1=sc.makeRDD(4 to 10)
 val rdd2=rdd.cartesian(rdd1)
 ```
 12. 创建一个RDD数据为List((“female”,1),(“male”,5),(“female”,5),(“male”,2))，请计算出female和male的总数分别为多少
+```Scala
 val rdd=sc.makeRDD(List((“female”,1),(“male”,5),(“female”,5),(“male”,2)))
 val rdd1=rdd.map(x=>x._1,1).reduceByKey(_+_)
+```
 13. 创建一个有两个分区的 RDD数据为List((“a”,3),(“a”,2),(“c”,4),(“b”,3),(“c”,6),(“c”,8))，取出每个分区相同key对应值的最大值，然后相加
 ```Scala
 val rdd=sc.makeRDD(List((“a”,3),(“a”,2),(“c”,4),(“b”,3),(“c”,6),(“c”,8)),2)
