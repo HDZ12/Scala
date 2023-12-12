@@ -176,7 +176,19 @@ val df1=Score.groupBy("s_id").agg(avg("s_core") as "score").filter($"score">=60)
 ```
 (3)
 ```Scala
-val df1=Score.groupBy("s_id").agg(sum("s_score")as"score",count("c_id")as"c_count").join(Student
-
+val df1=Score.groupBy("s_id").agg(sum("s_score")as"score",count("c_id")as"c_count").join(Student,"s_id").select("s_id","s_name","score","c_count")
+```
+(4)
+```Scala
+val df=Teacher.where(Teacher("t_name")like"李%").count()
+```
+(5)
+```Scala
+val df=Score.join(course,"c_id").join(Teacher,"t_id").where($"t_name"==="张三").select("s_id").join(Student,"s_id")
+```
+(6)
+```Scala
+val df=Score.groupBy("c_id").count().where($"count">5).orderBy(desc("count"),$"c_id".asc)
+```
 
 
