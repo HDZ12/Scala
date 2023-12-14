@@ -8,3 +8,7 @@
 ## [05.DataFrame](https://github.com/HDZ12/Scala/blob/main/note/05.DataFrame.md)
 ## [06.SparkStreaming](https://github.com/HDZ12/Scala/blob/main/note/06.SparkStreaming.md)
 ## [07.Dstream](https://github.com/HDZ12/Scala/blob/main/note/07.Dstream.md)
+## [08.练习]
+- [Scala练习](https://github.com/HDZ12/Scala/blob/main/Practice/Scalatest.md)
+- [Spark练习](https://github.com/HDZ12/Scala/blob/main/Practice/Sparktest.md)
+- [SparkStreaming练习](https://github.com/HDZ12/Scala/blob/main/Practice/SparkStreamingtest.md)
