@@ -32,8 +32,9 @@ scc.start()
 3. 每随机间隔5秒在目录/data/SparkStreaming/下新建一个文件，并写入若干行内容（每一行包含若干单词，单词之间以空格分隔）。现利用Spark Streaming分别完成如下单词统计： \
 (1)实时统计每10s新出现的单词数量（每10s统计1次）； \
 (2)实时统计最近1分钟内每个单词的出现次数（每10s统计1次）；\
-(3)实时统计每个单词的累积出现次数，并将结果保存到本地文件（每10s统计1次）
-(1)
+(3)实时统计每个单词的累积出现次数，并将结果保存到本地文件（每10s统计1次）\
+
+**(1)**
 ```Scala
 val ssc = new StreamingContext(sc.Seconds(10))
 val df = ssc.textFileStream("/data/SparkStreaming/")
@@ -45,4 +46,24 @@ val totalwordcount = words.updateStateByKey((cv:Seq[Int],pv:Option[Int])=>{
 )
 val new = wordcount.union(totalwordcount).reduceByKey(_-_).filter(_._2==0)
 val result = new.count()
+```
+**(2)**
+```Scala
+val ssc=new StreamingContext(sc.Seconds(10))
+val df = sc.textFileStream("/data/SparkStreaming/")
+val win = df.window(Seconds(60),Seconds(10))
+val words = win.flatMap(_.split(" ")).reduceByKey(_+_)
+```
+**(3)**
+```Scala
+val ssc = new StreamingContext(sc.Seconds(10))
+val df = ssc.textFileStream("/data/SparkStreaming/")
+val words = df.flatmap(_.split(" ")).map(x=>(x,1))
+val wordcount = words.reduceByKey(_+_)
+val totalwordcount = words.updateStateByKey((cv:Seq[Int],pv:Option[Int])=>{
+                                val v=cv.sum
+                                Some(v+pv.getOrElse(0))}
+)
+totalwordcount.saveAsTextFiles("test","txt")
+ssc.start()
 ```
