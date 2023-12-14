@@ -35,4 +35,14 @@ scc.start()
 (3)实时统计每个单词的累积出现次数，并将结果保存到本地文件（每10s统计1次）
 (1)
 ```Scala
-
+val ssc = new StreamingContext(sc.Seconds(10))
+val df = ssc.textFileStream("/data/SparkStreaming/")
+val words = df.flatmap(_.split(" ")).map(x=>(x,1))
+val wordcount = words.reduceByKey(_+_)
+val totalwordcount = words.updateStateByKey((cv:Seq[Int],pv:Option[Int])=>{
+                                val v=cv.sum
+                                Some(v+pv.getOrElse(0))}
+)
+val new = wordcount.union(totalwordcount).reduceByKey(_-_).filter(_._2==0)
+val result = new.count()
+```
