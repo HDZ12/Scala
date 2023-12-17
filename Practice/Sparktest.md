@@ -270,7 +270,7 @@ val splitlac=lac.map(line=>{
 val joined=lmt.join(splitlac)
 joined.collect
 ```
-20. 数据文件word.txt存储在HDFS上（路径为/user/word.txt），文件中包含了多行句子，现在要求对文档中的单词计数，并把单词计数超过3的结果以Json格式存储到HDFS上（路径为/Json/Wordcount，其中单词字段名称为“Word”，次数字段名称为“Count” ），且保证输出结果文件只有一个。\
+20. 数据文件word.txt存储在HDFS上（路径为/user/word.txt），文件中包含了多行句子，现在要求对文档中的单词计数，并把单词计数超过3的结果以Json格式存储到HDFS上（路径为/Json/Wordcount，其中单词字段名称为“Word”，次数字段名称为“Count” ），且保证输出结果文件只有一个。
 ```Scala
 val data = sc.textFile("user/word.txt")
 val wordCounts = data.flatMap(x=>x.split("\\s+")).filter(word=>word.nonEmpty).map(word=>(word,1)).reduceByKey(_+_)
