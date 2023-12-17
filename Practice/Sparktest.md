@@ -190,5 +190,48 @@ val df=Score.join(course,"c_id").join(Teacher,"t_id").where($"t_name"==="张三"
 ```Scala
 val df=Score.groupBy("c_id").count().where($"count">5).orderBy(desc("count"),$"c_id".asc)
 ```
+17. 给定下列数据，数组中的每个元素都由一个城市名称和温度组成，求每个城市的平均温度：\
+val data1 = Array(("Changsha", 35.1), ("Beijing", 27.7), ("Shanghai", 32.8), ("Shenyang", 24.6))
+val data2 = Array(("Changsha", 36.3), ("Beijing", 30.4), ("Shanghai", 33.5))
+val data3 = Array(("Changsha", 34.5), ("Beijing", 31.1), ("Shanghai", 32.0), ("Shenyang", 22.7))
+```Scala
+//combineByKey实现方法
+val data0 = data1+data2+data3
+val data=sc.makeRDD(data0)
+val result = data.combineByKey(
+    count=>(count,1)
+    (acc:(Int,Int),count)=>(acc._1+count,acc._2+1)
+    (acc1:Int,acc2:Int)=>(acc1._1+acc2._1,acc1._2+acc2._2)
+)
+val avg = result.map(x=>(x._1,x._2._1toDouble()/x._2._2)
+```
+```Scala
+//groupBy实现方法
+val data0=data1+data2+data3
+val city = data.groupBy(x=>x._1)
+val result=city.map(tp=>{
+  val total:Double=tp._2.map(_._2).reduce(_+_)
+  val month:Int=tp._2.length
+  (tp._1,total/month)
+})
+```
+18. HDFS上有三份文件，分别为student.txt（学生信息表）， result_bigdata.txt （大数据基础成绩表），result_math.txt（数学成绩表）\
+加载result_bigdata.txt为名称为bigdata的RDD数据，result_math.txt为名称为math的RDD数据\
+![image](https://github.com/HDZ12/Scala/assets/99587726/c459afa6-7956-4eb4-aafb-a90ee2f9ea5b)![image](https://github.com/HDZ12/Scala/assets/99587726/6504a60a-94c2-4075-bed6-a6ee6d6db085)![image](https://github.com/HDZ12/Scala/assets/99587726/e13c97f8-211d-4f9d-a002-1b405fd5f957)\
+(1) 分别读取两份学生成绩表创建RDD
+```Scala
+val bigdata=sc.textFile("result_bigdata.txt")
+val math=sc.textFile("result_math.txt")
+```
+(2) 据任务得到的RDD bigdata及math，分别取出成绩排名前5的学生及成绩信息
+```Scala
+
+
+
+
+
+
+
+
 
 
