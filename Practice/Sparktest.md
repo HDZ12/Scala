@@ -225,6 +225,65 @@ val math=sc.textFile("result_math.txt")
 ```
 (2) 据任务得到的RDD bigdata及math，分别取出成绩排名前5的学生及成绩信息
 ```Scala
+val m_bigdata = bigdata.map{x=>val line=x.split("\t");(line(0),line(1),line(2).toInt)}
+val m_math = math.map{x=>val line=x.split("\t");(line(0),line(1),line(2))}
+val sort_bigdata = m_bigdata.sortBy(x=>x._3,false)
+val sort_math = m_math.sortBy(x=>x._3,false)
+sort_bigdata.take(5)
+sort_math.take(5)
+```
+(3) 找出单科成绩为100的学生ID，最终的结果需要集合到一个RDD中，这涉及两个RDD，一个是数学成绩RDD，一个是大数据成绩RDD，需要对两个RDD进行合并操作。
+```Scala
+val bigdata_Id = bigdata.filter(x=>x._3==100).map(x=>x._1)
+val math_Id = math.filter(x=>x._3==100).map(x=>x._1)
+val id = bigdata_Id.union(math_Id).distinct()
+```
+(4) 输出每位学生的总成绩，要求将两个成绩表中学生ID相同的成绩相加。这一步要求计算过程能对同一个学生ID的数据识别并相加，可以通过将学生ID设为键的方式完成，对同一个键的数据进行统计
+```Scala
+val all_score = bigdata.union(math)
+val score = all_score.map(x=>(x._1,x._3)).reduceByKey((a,b)=>a+b)
+```
+19. 通过基站信息追踪某个手机号码出现的位置及时长\
+根据手机信号可以计算其所在的位置，手机和附近的基站建立连接和断开连接都会被记录到服务器的日志上，据此可以定位手机所在的位置。于是可以根据这些位置信息做一些推荐广告，比如附近的商家，手机用户可能喜欢的商品或者服务。 \
+为了便于理解，模拟了一些简单的日志数据存放在A.txt中，共4个字段：手机号码，时间戳，基站id，连接类型（1表示建立连接，0表示断开连接）。日志数据如下所示：\
+![image](https://github.com/HDZ12/Scala/assets/99587726/c470f53a-b83c-4b33-9c4b-4d78958c2e52)![image](https://github.com/HDZ12/Scala/assets/99587726/1d060ed6-95d6-48f7-96c4-256086745f55)\
+基站表的数据共4个字段，分别代表基站id和经纬度以及信号的辐射类型（比如2G信号、3G信号和4G信号）：\
+![image](https://github.com/HDZ12/Scala/assets/99587726/6e176dd9-81a2-4188-a46f-d901715f1fcd)![image](https://github.com/HDZ12/Scala/assets/99587726/af4a26f8-b40f-482e-8a0c-b9f10ff17140)\
+结果形式：\
+（手机号，基站id，所在基站的时长，基站经度，基站纬度）
+```Scala
+val lines=sc.textFile(“A.txt”)
+val split=lines.map(line=>{
+	val fields=line.split(“,”)
+	val time = if(fields(3)==“1”) –fields(1).toLong else fields(1).toLong
+	((fields(0),fields(2)),time)
+})
+val reduced=split.reduceByKey(_+_)
+val lmt = reduced.map(x=>(x._1._2),(x._1._1,x._2))
+
+val lac=sc.textFile(“B.txt”)
+val splitlac=lac.map(line=>{
+	val fields=line.split(“,”)
+	(fields(0),(fields(1),fields(2)))
+})
+
+val joined=lmt.join(splitlac)
+joined.collect
+```
+20. 数据文件word.txt存储在HDFS上（路径为/user/word.txt），文件中包含了多行句子，现在要求对文档中的单词计数，并把单词计数超过3的结果以Json格式存储到HDFS上（路径为/Json/Wordcount，其中单词字段名称为“Word”，次数字段名称为“Count” ），且保证输出结果文件只有一个。\
+```Scala
+val data = sc.textFile("user/word.txt")
+val wordCounts = data.flatMap(x=>x.split("\\s+")).filter(word=>word.nonEmpty).map(word=>(word,1)).reduceByKey(_+_)
+val filteredWordCounts = wordCounts.filter(x=>x._2>3)
+val resultDF = filteredWordCounts.toDF("Word", "Count")
+resultDF.coalesce(1).write.json("/Json/WordCount")
+```
+
+
+
+
+
+
 
 
 
