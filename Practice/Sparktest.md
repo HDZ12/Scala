@@ -11,7 +11,7 @@ val res1=rdd.flatMap(x=>array(x*x,x*x*x))
 ```
 3. 创建一个 RDD数据为Array(1, 3, 4, 20, 4, 5, 8)，按照元素的奇偶性进行分组
 ```Scala
-val rdd=sc.makeRDD(Array(1,3.4,20,4,5,8))
+val rdd=sc.makeRDD(Array(1,3,4,20,4,5,8))
 val res=rdd.groupBy(x=>x%2==0)
 ```
 4. 创建一个 RDD（由字符串组成）Array(“xiaoli”, “laoli”, “laowang”, “xiaocang”, “xiaojing”, “xiaokong”)，过滤出一个新 RDD（包含“xiao”子串）
