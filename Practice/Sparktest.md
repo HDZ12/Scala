@@ -278,6 +278,37 @@ val filteredWordCounts = wordCounts.filter(x=>x._2>3)
 val resultDF = filteredWordCounts.toDF("Word", "Count")
 resultDF.coalesce(1).write.json("/Json/WordCount")
 ```
+21. 已知学生信息（student）、教师信息（teacher）、课程信息（course）和成绩信息（score），通过Spark SQL对这些信息进行查询，分别得到需要的结果。\
+学生信息如图所示。\
+![image](https://github.com/HDZ12/Scala/assets/99587726/a0476c28-70d5-4af1-a4a9-8c7e7ac7f782)\
+教师信息如图所示。\
+![image](https://github.com/HDZ12/Scala/assets/99587726/28a20509-3bdd-45d9-bbe9-0cb29e388e7b)\
+课程信息如图 所示。\
+![image](https://github.com/HDZ12/Scala/assets/99587726/1b6f5b10-44b2-4bcd-a4e7-91ba620903e2)\
+成绩信息如图 所示。\
+![image](https://github.com/HDZ12/Scala/assets/99587726/abb1f22d-c4fb-4ce5-a511-8b538843cd8a)\
+创建student，teacher，course，score对应的DataFrame，并生成对应的临时注册表
+```Scala
+val studentRDD = sqlContext.textFile("/home/ubuntu01/sqlExample/student.txt")
+val StudentSchema:StringType=StructType(mutable.ArraySeq{
+	StructField("Sno",StringType,nullable=false),
+	StructField("Sname",StringType,nullable=false),
+	StructField("Ssex",StringType,nullable=false),
+	StructField("Sbirthday",StringType,nullable=false),
+	StructField("Sclass",StringType,nullable=true)
+})
+val studentData=studentRDD.map(_.split(",").map(attributes=>Row(attributes(0),attributes(1),attributes(2),attributes(3),attributes(4)))
+val studentDF = sqlContext.createDataFrame(studentData,StudentSchema)
+studentDF.createOrReplaceTempView("student")
+```
+
+
+
+
+
+
+
+
 
 
 
