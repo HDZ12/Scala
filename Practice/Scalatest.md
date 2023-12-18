@@ -66,7 +66,7 @@ val wan = Y2.filter(_._1=="wangwu").map(_._3)
 ```
 12. 定义一个高阶函数，对数组中的元素按照指定的规则进行过滤,比如：数组Array（1，4，7，10，6，9，8）,规则：只保留偶数数据。
 ```Scala
-def filter(arr1: Array[Int],f:Int=>Boolean)={
+def filter(arr: Array[Int],f:Int=>Boolean)={
 val res=for(i<-arr if f(i)) yield i
 res
 }
