@@ -125,7 +125,7 @@ val course=rdd.map(x=>(x._2,x._3)).combineByKey(
   (acc:(Int,Int),count)=>(acc._1+count,acc._2+1),
   (acc1:(Int,Int),acc2:(Int,Int))=>(acc1._1+acc2._1,acc1._2+acc2._2)
 )
-val result=course.map(x=>(x._1,x._2._1.toDouble()/x._2._2)
+val result=course.map(x=>(x._1,x._2._1.toDouble/x._2._2)
 ```
 (6)
 ```Scala
@@ -203,7 +203,7 @@ val result = data.combineByKey(
     (acc:(Int,Int),count)=>(acc._1+count,acc._2+1)
     (acc1:Int,acc2:Int)=>(acc1._1+acc2._1,acc1._2+acc2._2)
 )
-val avg = result.map(x=>(x._1,x._2._1toDouble()/x._2._2)
+val avg = result.map(x=>(x._1,x._2._1toDouble/x._2._2)
 ```
 ```Scala
 //groupBy实现方法
