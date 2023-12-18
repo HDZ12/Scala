@@ -103,7 +103,7 @@ val count=rdd.map(x=>x._1).distinct().count()
 (2)
 ```Scala
 val Tom=rdd.filter(x=>x._1=="Tom").map(x=>(x._1,x._3))
-val score=Tom.combineByk=Key(
+val score=Tom.combineByKey(
   count=>(count,1),
   (acc:(Int,Int),count)=>(acc._1+count,acc._2+1),
   (acc1:(Int,Int),acc2:(Int,Int))=>(acc1._1+acc2._1,acc1._2+acc2._2)
