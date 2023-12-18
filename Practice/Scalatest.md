@@ -1,6 +1,6 @@
 1. 编写一个方法method1，输入分数之后能够打印出不及格（小于60分）、及格（60-80分）、良好（80-90分）优秀（大于90分）
 ```Scala
-def method1(x: Int):Unit{
+def method1(x: Int):Unit={
     if (x < 60) println("不及格")
     else if (60 <= x && x <= 70) println("及格")
     else if (80 <= x && x <= 90) println("良好")
