@@ -301,16 +301,66 @@ val studentData=studentRDD.map(_.split(",").map(attributes=>Row(attributes(0),at
 val studentDF = sqlContext.createDataFrame(studentData,StudentSchema)
 studentDF.createOrReplaceTempView("student")
 ```
-
-
-
-
-
-
-
-
-
-
+```Scala
+val teacherRDD = sqlContext.textFile("/home/ubuntu01/sqlExample/teacher.txt")
+val TeacherSchema:StructType=StructType{mutable.Arrayseq{
+	StructField("Tno",StringType,nullable=false),
+	StructField("Tname",StringType,nullable=false),
+	StructField("Tsex",StringType,nullable=false),
+	StructField("Tbirthday",StringType,nullable=false),
+	StructField("Prof",StringType,nullable=false),
+	StructField("Depart",StringType,nullable=false),
+}
+val teacherData=teacherRDD.map(_.split(",")).map(attributes=>ROW(attributes(0),attributes(1),attributes(2),attributes(3),attributes(4),attributes(5)))
+val teacherDF=sqlContext.createDataFrame(teacherData,TeacherSchema)
+teacherDF.createOrReplaceTempView("teacher")
+```
+```Scala
+val courseRDD=sqlContext.textFile("/home/ubuntu01/sqlExample/course.txt")
+val CourseSchema:StringType(mutable.ArraySeq{
+	StructField("Cno",StringType,nullable=false),
+	StructField("Cname",StringType,nullable=false),
+	StructField("Tno",StringType,nullable=false),
+})
+val courseData = courseRDD.split(",").map(attributes=>ROW(attributes(0),attributes(1),attributes(2)))
+val courseDF=sqlContext.createDaTaFrame(courseData,CourseSchema)
+coyrseDF.createOrReplaceTempView("course")
+```
+```Scala
+val scoreRDD = sqlContext.textFile("/home/ubuntu01/sqlExample/score.text")
+val ScoreSchema:StructType=StructType(mutable.ArraySeq{
+	StructField("Sno",StringType,nullable=false),
+	StructField("Cno",StringType,nullable=false),
+	StructField("Degree",StringType,nullable=false),
+})
+val scoreData = scoreRDD.split(",").map(attributes=>attributes(0),attributes(1),attributes(2))
+val scoreDF = sqlContext.createDataFrame(scoreData,ScoreSchema)
+scoreDF.createOrReplaceTempView("score")
+```
+1. 显示student表中名字和性别信息
+```Scala
+studentDF.select("Sname","Ssex").show()
+```
+2. 按照班级降序排序显示所有学生信息
+```Scla
+sqlContext.sql(select * FROM student ORDER BY Sclass DESC").show()
+```
+3. 显示性别为男的教师信息
+```Scala
+teacherDF.filter("Tsex='male'").show(false)
+```
+4. 显示不重复的教师部门信息
+```Scala
+teacherDF.select("Depart").distinct()show(false)
+```
+5. 显示不重复的教师部门信息
+```Scla
+studentDF.where("Sno='101'").show()
+```
+6. 查询所有女教师、女学生的姓名，性别及生日信息
+```Scla
+sqlContext.sql("select sname,ssex,sbirthday from Student where ssex='female' union select tname,tsex,tbirthday from Teacher where ssex='female'").show()
+```
 
 
 
