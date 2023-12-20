@@ -22,7 +22,7 @@ ssc.start()
 编写Spark Streaming代码，要求以5秒为批处理时间间隔，每10秒钟计算一次60s内各网页的热度总和，并输出热度最高的前10个网页ID及热度值信息。
 ```Scala
 val ssc = new StreamingContext(Seconds(5))
-val data = ssc.soctokenTextStream("172.23.15.28",8080)
+val data = ssc.socketTextStream("172.23.15.28",8080)
 val network = data.window(Seconds(60),Seconds(10))
 val hot = network.map(x=>{val w=split("\t");
 (w(0),0.2*w(1).toInt+0.8*w(2).toInt+0.3*w(3).toInt+w(4).toInt)}).reduceByKey(_+_)
