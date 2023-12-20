@@ -38,7 +38,7 @@ scc.start()
 ```Scala
 val ssc = new StreamingContext(sc.Seconds(10))
 val df = ssc.textFileStream("/data/SparkStreaming/")
-val words = df.flatmap(_.split(" ")).map(x=>(x,1))
+val words = df.flatMap(_.split(" ")).map(x=>(x,1))
 val wordcount = words.reduceByKey(_+_)
 val totalwordcount = words.updateStateByKey((cv:Seq[Int],pv:Option[Int])=>{
                                 val v=cv.sum
