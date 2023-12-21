@@ -167,7 +167,7 @@ s_score：分数\
 ```Scala
 val course1=Score.where($"c_id"===01).select(Score("s_id"),Score("c_id")as"c_id_01",Score("s_score")as"s_score_01")
 val course2=Score.where($"c_id"===02).select(Score("s_id"),Score("c_id")as"c_id_02",Score("s_core")as"s_score_02")
-val df1=course1.join(course2,"s_id").filter($"c_id_01">$"c_id_02")
+val df1=course1.join(course2,"s_id").filter($"s_score_01"> $"s_score_02")
 val df2=df1.join(student,"s_id")
 ```
 (2)
