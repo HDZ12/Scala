@@ -112,7 +112,7 @@ val result=score.map(x=>x._1,x._2._1.toDouble/x._2._2)
 ```
 (3)
 ```Scala
-val count=rdd.map(x=>(x._1,x.3)).countByKey()
+val count=rdd.map(x=>(x._1,x._3)).countByKey()
 ```
 (4)
 ```Scala
