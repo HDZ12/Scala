@@ -94,7 +94,7 @@ val result=rdd1.map(x=>x._1,x._2._1.toDouble/x._2._2)
 （5）各门课程的平均分是多少\
 （6）每位同学的总成绩
 ```Scala
-val rdd=sc.textFile("\student\score.txt").map(x=>x.split(",")),map(x=>(x(0),x(1),x(2)))
+val rdd=sc.textFile("\student\score.txt").map(x=>x.split(",")).map(x=>(x(0),x(1),x(2)))
 ```
 (1) 
 ```Scala
