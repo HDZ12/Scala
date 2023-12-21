@@ -180,7 +180,7 @@ val df1=Score.groupBy("s_id").agg(sum("s_score")as"score",count("c_id")as"c_coun
 ```
 (4)
 ```Scala
-val df=Teacher.where(Teacher("t_name")like"李%").count()
+val df=Teacher.where($"t_name"like"李%").count()
 ```
 (5)
 ```Scala
