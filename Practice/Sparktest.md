@@ -86,7 +86,7 @@ val rdd1=rdd.combineByKey(
 val result=rdd1.map(x=>x._1,x._2._1.toDouble/x._2._2)
 ```
 15. 有学生课程成绩文件，存储在“\student\score.txt”中，通过Spark编程完成以下问题：
-![image](https://github.com/HDZ12/Scala/assets/99587726/c560786a-cbf5-446a-9457-c0b8556f428e)
+![image](https://github.com/HDZ12/Scala/assets/99587726/c560786a-cbf5-446a-9457-c0b8556f428e)\
 （1）该系共有多少名学生\
 （2）Tom的总成绩平均分\
 （3）每名同学选修的课程门数\
